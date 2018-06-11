@@ -1,27 +1,35 @@
-//
-// Created by Daniel Reznikov on 6/9/18.
-//
+/*
+ * Created by Daniel Reznikov on 6/9/18.
+ */
 
 #ifndef MEDIAN_DATA_STRUCTURE_MEDIAN_H
 #define MEDIAN_DATA_STRUCTURE_MEDIAN_H
 
+#include <algorithm>
+#include <ctime>
+#include <cstdlib>
 #include <iostream>
 #include <list>
-#include "catch.hpp"
+#include <stdexcept>
 
+using namespace std;
+
+/* A data structure for quickly computing the median of a list of ints. */
 class Median
 {
   private:
-    std::list<int> data;
-    int median;
+    std::list<int> data;  /* Backing data store is a linked-list */
 
+    int median;           /* Instance variable for fast retrieval of median value */
 
   public:
-    Median();
+    Median() { };         /* A constructor */
 
-    int getMedian();
+    ~Median() { };        /* A destructor */
 
-    void add(int value);
+    int getMedian();      /* Retrieves median value */
+
+    void add(int value);  /* Adds an integer value to the data structure */
 };
 
 #endif //MEDIAN_DATA_STRUCTURE_MEDIAN_H

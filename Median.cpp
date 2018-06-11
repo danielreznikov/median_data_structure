@@ -1,72 +1,66 @@
-//
-// Created by Daniel Reznikov on 6/9/18.
-//
+/*
+ * Created by Daniel Reznikov on 6/9/18.
+ */
 
-#define CATCH_CONFIG_MAIN
 #include "Median.h"
 
-Median::Median() {
-  //median = NULL;
-  //data = new std::list<int>();
-}
-
 void Median::add(int value) {
+  int prev, next, idx = 0;
 
-  if (data.empty())
-    data.insert(data.begin(), value);
+  // Special case when inserting into an empty structure.
+  if (data.empty()) {
+    data.push_front(value);
+    median = value;
+    return;
+  }
 
-  int idx = 0;
-  for (std::list<int>::const_iterator iterator = data.begin(), end = data.end(); iterator != end; ++iterator) {
+  // Insert value into backing list structure.
+  for (list<int>::const_iterator iterator = data.begin(), end = data.end(); iterator != end; iterator++) {
 
-    int prev, next;
-    if (idx == data.size()/2 - 1)
+    // Prev/Next used to identify the candidate median values in place.
+    if (idx == max(int((data.size() / 2) - 1), 0))
       prev = *iterator;
-    else if (idx == data.size()/2 + 1)
+    else if (idx == data.size() / 2)
       next = *iterator;
 
+    idx++;
+
     if (value < *iterator) {
-      // Inserting into first half with even occupancy.
-      if (idx < data.size() / 2 and data.size() % 2 == 0)
-        data.insert(iterator, value);
+      data.insert(iterator, value);
 
-      // Inserting into first half with odd occupancy.
-      else if (idx < data.size() / 2 and data.size() % 2 != 0) {
-        data.insert(iterator, value);
-        median = prev;
+      if (*iterator == median) {
+        // handles small list where prev == median -> insert 3 into [5, 7]
+        prev = value;
+      } else if (*iterator == next) {
+        // handles insertion of middle key -> insert 5 into [1, 7]
+        next = value;
       }
 
-      // Inserting into second half with even occupancy.
-      else if (idx >= data.size()/2 and data.size() % 2 == 0) {
-        data.insert(iterator, value);
-        median = next;
-      }
-
-      // Inserting into second half with odd occupancy.
-      else if (idx >= data.size()/2 and data.size() % 2 != 0)
-        data.insert(iterator, value);
+      break;
     }
+
+    // Insertion at the end of the list.
+    else if (idx == data.size()) {
+      data.insert(end, value);
+      break;
+    }
+  }
+
+  // Update the median value in place.
+  if (idx <= data.size() / 2 and data.size() % 2 == 0) {
+    // Inserting into first half with even occupancy.
+    median = prev;
+  } else if (idx > data.size() / 2 and data.size() % 2 != 0) {
+    // Inserting into second half with odd occupancy.
+    median = next;
   }
 }
 
 int Median::getMedian() {
+  if (data.empty())
+    throw "Empty structure has no median value!";
+
   return median;
 }
 
-/*int main() {
-  Median median = Median();
 
-  std::cout << "Median Value is " << median.getMedian() << std::endl;
-
-  median.add(1);
-  std::cout << "Median Value is " << median.getMedian() << std::endl;;
-
-  median.add(3);
-  std::cout << "Median Value is " << median.getMedian() << std::endl;
-}
- */
-
-TEST_CASE( "Empty List", "Prove that one equals 2" )
-{
-  int one = 2;
-  REQUIRE( one == 3 );
-}
