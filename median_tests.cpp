@@ -77,12 +77,12 @@ TEST_CASE("Random Insertion Test")
 {
   Median median = Median();
 
-// Generate random permutation of ints in range [1,100].
+  // Generate random permutation of ints in range [1,100].
   vector<int> vec;
   for (int i=1; i<101; ++i) vec.push_back(i);
   random_shuffle ( vec.begin(), vec.end() );
 
-// Insert random value into median structure.
+  // Insert random value into median structure.
   for (vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     median.add(*it);
 

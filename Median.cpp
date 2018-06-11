@@ -9,13 +9,13 @@ void Median::add(int value) {
 
   // Special case when inserting into an empty structure.
   if (data.empty()) {
-    data.push_front(value);
+    data.insert(data.begin(), value);
     median = value;
     return;
   }
 
-  // Insert value into backing list structure.
-  for (list<int>::const_iterator iterator = data.begin(), end = data.end(); iterator != end; iterator++) {
+  // Insert value into backing set structure.
+  for (set<int>::const_iterator iterator = data.begin(), end = data.end(); iterator != end; iterator++) {
 
     // Prev/Next used to identify the candidate median values in place.
     if (idx == max(int((data.size() / 2) - 1), 0))

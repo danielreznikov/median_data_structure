@@ -9,16 +9,16 @@
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
-#include <list>
 #include <stdexcept>
+#include <set>
 
 using namespace std;
 
-/* A data structure for quickly computing the median of a list of ints. */
+/* A data structure for quickly computing the median of a set of ints. */
 class Median
 {
   private:
-    std::list<int> data;  /* Backing data store is a linked-list */
+    set<int> data;        /* Backing data store is a std::set */
 
     int median;           /* Instance variable for fast retrieval of median value */
 
